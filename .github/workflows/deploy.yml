@@ -55,15 +55,20 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
       
+      - name: Create deployment directory
+        run: |
+          mkdir -p deployment/client
+          mkdir -p deployment/server
+          cp -r client/dist/* deployment/client/
+          cp -r server/dist/* deployment/server/
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            client/dist
-            server/dist
+          path: deployment
 
   deploy:
     environment:
