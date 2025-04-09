@@ -26,19 +26,34 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'client/package-lock.json'
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
       
-      - name: Install dependencies
+      - name: Install client dependencies
         run: |
           cd client
           npm install
       
-      - name: Build
+      - name: Build client
         run: |
           cd client
           npm run build
         env:
           VITE_API_URL: https://shan533.github.io/character-generator/api
+      
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm install
+      
+      - name: Build server
+        run: |
+          cd server
+          npm run build
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -46,7 +61,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'client/dist'
+          path: |
+            client/dist
+            server/dist
 
   deploy:
     environment:
