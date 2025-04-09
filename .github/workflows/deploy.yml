@@ -37,6 +37,8 @@ jobs:
         run: |
           cd client
           npm run build
+        env:
+          VITE_API_URL: https://shan533.github.io/character-generator/api
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
