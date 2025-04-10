@@ -46,6 +46,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://shan533.github.io',
+    'https://shan533.github.io/character-generator',
     'https://character-generator-y9jf.onrender.com'
   ],
   credentials: true
