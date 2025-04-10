@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -51,7 +51,7 @@ app.use('/api/characters', characterRoutes);
 app.use('/api/images', imageRoutes);
 
 // Base route
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('Character Image Generator API is running');
 });
 
