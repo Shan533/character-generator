@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/character-generator">
       <div className="min-h-screen bg-gray-100">
         <Header />
         <main className="container mx-auto py-6 px-4 sm:px-6 lg:px-8">
