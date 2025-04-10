@@ -12,10 +12,10 @@ const HomePage = () => {
   };
   
   return (
-    <div className="max-w-6xl w-full mx-auto px-4 py-8 md:py-12 min-h-screen flex flex-col justify-center">
+    <div className="max-w-6xl w-full mx-auto px-4 py-8 md:py-12 flex flex-col justify-center">
       {!showCreationForm ? (
-        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
-          <div className="md:w-1/2 text-center md:text-left md:mt-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="md:w-1/2 text-center md:text-left">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-gray-800">
               Bring Your Characters <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">to Life</span>
             </h1>
