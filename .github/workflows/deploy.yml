@@ -39,7 +39,7 @@ jobs:
           npm run build
         env:
           NODE_ENV: production
-          VITE_API_URL: https://character-generator-server.onrender.com/api
+          VITE_API_URL: https://character-generator-y9jf.onrender.com/api
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
