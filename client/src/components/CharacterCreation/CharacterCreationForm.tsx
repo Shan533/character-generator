@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import axios from 'axios';
+import { characterApi } from '../../services/api';
 
 interface CharacterAttributes {
   age?: number;
@@ -68,13 +68,11 @@ const CharacterCreationForm: React.FC<CharacterCreationFormProps> = ({ onCharact
     setError(null);
     
     try {
-      // We'll let the server build the prompt now
-      const response = await axios.post('/api/characters', {
-        ...formData
-      });
+      // Use the characterApi service instead of direct axios call
+      const response = await characterApi.createCharacter(formData);
       
       // Call the callback with the character ID
-      onCharacterCreated(response.data._id);
+      onCharacterCreated(response._id);
     } catch (err) {
       console.error('Error creating character:', err);
       setError('Failed to create character. Please try again.');

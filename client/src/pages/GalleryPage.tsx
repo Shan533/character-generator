@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { characterApi, imageApi } from '../services/api';
 import ImageCard from '../components/Gallery/ImageCard';
 import RefineImageModal from '../components/Gallery/RefineImageModal';
 
@@ -35,12 +35,12 @@ const GalleryPage = () => {
     const fetchData = async () => {
       try {
         // Fetch character details
-        const characterResponse = await axios.get(`/api/characters/${characterId}`);
-        setCharacter(characterResponse.data);
+        const characterResponse = await characterApi.getCharacterById(characterId || '');
+        setCharacter(characterResponse);
         
         // Fetch images for the character
-        const imagesResponse = await axios.get(`/api/images/character/${characterId}`);
-        setImages(imagesResponse.data);
+        const imagesResponse = await imageApi.getImagesByCharacterId(characterId || '');
+        setImages(imagesResponse);
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load gallery data');
@@ -54,11 +54,11 @@ const GalleryPage = () => {
   
   const handleToggleFavorite = async (imageId: string) => {
     try {
-      const response = await axios.patch(`/api/images/${imageId}/favorite`);
+      const response = await imageApi.toggleFavorite(imageId);
       
       // Update the images list with the updated image
       setImages(prevImages => prevImages.map(img => 
-        img._id === imageId ? response.data : img
+        img._id === imageId ? response : img
       ));
     } catch (err) {
       console.error('Error toggling favorite:', err);
@@ -74,12 +74,10 @@ const GalleryPage = () => {
     if (!currentImage) return;
     
     try {
-      const response = await axios.post(`/api/images/${currentImage._id}/refine`, { 
-        refinedPrompt 
-      });
+      const response = await imageApi.refineImage(currentImage._id, refinedPrompt);
       
       // Add the new refined image to the list
-      setImages(prevImages => [response.data, ...prevImages]);
+      setImages(prevImages => [response, ...prevImages]);
       
       // Close the modal
       setRefineModalOpen(false);

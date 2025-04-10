@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { characterApi, imageApi } from '../services/api';
 
 interface Character {
   _id: string;
@@ -29,8 +29,8 @@ const CharacterPage = () => {
   useEffect(() => {
     const fetchCharacter = async () => {
       try {
-        const response = await axios.get(`/api/characters/${id}`);
-        setCharacter(response.data);
+        const response = await characterApi.getCharacterById(id || '');
+        setCharacter(response);
       } catch (err) {
         console.error('Error fetching character:', err);
         setError('Failed to load character details');
@@ -48,7 +48,7 @@ const CharacterPage = () => {
     setIsGenerating(true);
     
     try {
-      await axios.post(`/api/images/generate/${character._id}`, { count: 3 });
+      await imageApi.generateImages(character._id, 3);
       navigate(`/gallery/${character._id}`);
     } catch (err) {
       console.error('Error generating images:', err);
