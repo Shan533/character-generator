@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use the environment variable if available, otherwise fallback to the hardcoded Render URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://character-generator-y9jf.onrender.com/api';
+// Hardcode the API URL directly to avoid any issues with environment variables
+const API_URL = 'https://character-generator-y9jf.onrender.com/api';
 
 // Create axios instance with base URL
 const api = axios.create({
@@ -11,13 +11,16 @@ const api = axios.create({
   }
 });
 
-// Log the API URL being used
-console.log('API URL used:', API_URL);
+// Log the API URL being used at startup
+console.log('API URL hardcoded to:', API_URL);
 
 // Add request interceptor for debugging
 api.interceptors.request.use((config) => {
+  // Force the base URL to be the hardcoded one
+  config.baseURL = API_URL;
+  
   console.log('Making request to:', config.url || '');
-  console.log('Full URL:', (config.baseURL || '') + (config.url || ''));
+  console.log('Full URL:', API_URL + (config.url || ''));
   console.log('Method:', config.method || '');
   console.log('Headers:', config.headers);
   return config;
@@ -41,35 +44,39 @@ export const characterApi = {
   // Create a new character
   createCharacter: async (data: any) => {
     console.log('Creating character with data:', data);
-    const response = await api.post('/characters', data);
+    const response = await axios.post(`${API_URL}/characters`, data, {
+      headers: { 'Content-Type': 'application/json' }
+    });
     return response.data;
   },
   
   // Get all characters
   getCharacters: async () => {
     console.log('Fetching all characters');
-    const response = await api.get('/characters');
+    const response = await axios.get(`${API_URL}/characters`);
     return response.data;
   },
   
   // Get character by ID
   getCharacterById: async (id: string) => {
     console.log('Fetching character with ID:', id);
-    const response = await api.get(`/characters/${id}`);
+    const response = await axios.get(`${API_URL}/characters/${id}`);
     return response.data;
   },
   
   // Update character
   updateCharacter: async (id: string, data: any) => {
     console.log('Updating character with ID:', id);
-    const response = await api.put(`/characters/${id}`, data);
+    const response = await axios.put(`${API_URL}/characters/${id}`, data, {
+      headers: { 'Content-Type': 'application/json' }
+    });
     return response.data;
   },
   
   // Delete character
   deleteCharacter: async (id: string) => {
     console.log('Deleting character with ID:', id);
-    const response = await api.delete(`/characters/${id}`);
+    const response = await axios.delete(`${API_URL}/characters/${id}`);
     return response.data;
   }
 };
@@ -79,25 +86,29 @@ export const imageApi = {
   // Generate images for a character
   generateImages: async (characterId: string, count: number = 3) => {
     console.log('Generating images for character:', characterId);
-    const response = await api.post(`/images/generate/${characterId}`, { count });
+    const response = await axios.post(`${API_URL}/images/generate/${characterId}`, { count }, {
+      headers: { 'Content-Type': 'application/json' }
+    });
     return response.data;
   },
   
   // Get images for a character
   getImagesByCharacterId: async (characterId: string) => {
-    const response = await api.get(`/images/character/${characterId}`);
+    const response = await axios.get(`${API_URL}/images/character/${characterId}`);
     return response.data;
   },
   
   // Toggle favorite status
   toggleFavorite: async (imageId: string) => {
-    const response = await api.patch(`/images/${imageId}/favorite`);
+    const response = await axios.patch(`${API_URL}/images/${imageId}/favorite`);
     return response.data;
   },
   
   // Refine image
   refineImage: async (imageId: string, refinedPrompt: string) => {
-    const response = await api.post(`/images/${imageId}/refine`, { refinedPrompt });
+    const response = await axios.post(`${API_URL}/images/${imageId}/refine`, { refinedPrompt }, {
+      headers: { 'Content-Type': 'application/json' }
+    });
     return response.data;
   }
 };
