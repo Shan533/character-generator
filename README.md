@@ -64,6 +64,6 @@ npm run dev
 ## Environment Variables
 
 - `PORT`: Server port (default: 8000)
-- `MONGODB_URI`: MongoDB connection string
+- `MONGO_URI`: MongoDB connection string
 - `NODE_ENV`: Environment (development/production)
 - `OPENAI_API_KEY`: OpenAI API key for image generation

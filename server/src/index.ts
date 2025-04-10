@@ -16,7 +16,7 @@ dotenv.config();
 console.log('Environment variables loaded:');
 console.log(`- PORT: ${process.env.PORT || '(not set)'}`);
 console.log(`- NODE_ENV: ${process.env.NODE_ENV || '(not set)'}`);
-console.log(`- MONGODB_URI: ${process.env.MONGODB_URI ? 'Set (hidden for security)' : '(not set)'}`);
+console.log(`- MONGO_URI: ${process.env.MONGO_URI ? 'Set (hidden for security)' : '(not set)'}`);
 console.log(`- OPENAI_API_KEY: ${process.env.OPENAI_API_KEY ? 'Set (hidden for security)' : '(not set)'}`);
 
 // Check if .env file exists
@@ -64,10 +64,10 @@ const mongoOptions = {
 
 // Connect to MongoDB
 console.log('Connecting to MongoDB Atlas...');
-console.log(`URI: ${process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(0, 20) + '...' : 'Not set'}`);
+console.log(`URI: ${process.env.MONGO_URI ? process.env.MONGO_URI.substring(0, 20) + '...' : 'Not set'}`);
 
 mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/character-generator', mongoOptions)
+  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/character-generator', mongoOptions)
   .then(() => {
     console.log('Connected to MongoDB successfully');
     // Start server
