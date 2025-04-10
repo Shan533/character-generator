@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-// Hardcode the API URL directly to avoid any issues with environment variables
-const API_URL = 'https://character-generator-y9jf.onrender.com/api';
-
-// Create axios instance with base URL
+// Create axios instance with base URL from environment variable
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   }
@@ -13,8 +10,6 @@ const api = axios.create({
 
 // Add request interceptor for debugging
 api.interceptors.request.use((config) => {
-  // Force the base URL to be the hardcoded one
-  config.baseURL = API_URL;
   return config;
 });
 
