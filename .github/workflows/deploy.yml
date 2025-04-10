@@ -59,10 +59,8 @@ jobs:
       
       - name: Create deployment directory
         run: |
-          mkdir -p deployment/client
-          mkdir -p deployment/server
-          cp -r client/dist/* deployment/client/
-          cp -r server/dist/* deployment/server/
+          mkdir -p deployment
+          cp -r client/dist/* deployment/
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
