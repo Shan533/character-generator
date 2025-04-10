@@ -22,8 +22,10 @@
     "openai": "^4.92.1"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.14.0",
     "nodemon": "^3.1.9",
