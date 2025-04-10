@@ -34,13 +34,19 @@ const GalleryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch character details
-        const characterResponse = await characterApi.getCharacterById(characterId || '');
-        setCharacter(characterResponse);
-        
-        // Fetch images for the character
-        const imagesResponse = await imageApi.getImagesByCharacterId(characterId || '');
-        setImages(imagesResponse);
+        if (characterId) {
+          // Fetch character details when characterId is provided
+          const characterResponse = await characterApi.getCharacterById(characterId);
+          setCharacter(characterResponse);
+          
+          // Fetch images for the specific character
+          const imagesResponse = await imageApi.getImagesByCharacterId(characterId);
+          setImages(imagesResponse);
+        } else {
+          // Fetch all images when no characterId is provided
+          const allImagesResponse = await imageApi.getAllImages();
+          setImages(allImagesResponse);
+        }
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load gallery data');
@@ -96,7 +102,7 @@ const GalleryPage = () => {
     );
   }
   
-  if (error || !character) {
+  if (error) {
     return (
       <div className="text-center py-12">
         <p className="text-red-600">{error || 'Gallery not found'}</p>
@@ -114,10 +120,12 @@ const GalleryPage = () => {
     <div className="max-w-6xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">
-          {character.name} - Generated Images
+          {characterId && character 
+            ? `${character.name} - Generated Images` 
+            : 'All Generated Images'}
         </h1>
         <p className="text-gray-600 mt-1">
-          {images.length} {images.length === 1 ? 'image' : 'images'} generated from your prompt
+          {images.length} {images.length === 1 ? 'image' : 'images'} {characterId ? 'generated from your prompt' : 'in your collection'}
         </p>
       </div>
       
@@ -125,10 +133,10 @@ const GalleryPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">No images have been generated yet.</p>
           <button
-            onClick={() => navigate(`/characters/${characterId}`)}
+            onClick={() => navigate('/')}
             className="btn btn-primary"
           >
-            Generate Images
+            Create a Character
           </button>
         </div>
       ) : (
@@ -145,12 +153,21 @@ const GalleryPage = () => {
       )}
       
       <div className="mt-8 flex justify-between">
-        <button
-          onClick={() => navigate(`/characters/${characterId}`)}
-          className="btn btn-secondary"
-        >
-          Back to Character
-        </button>
+        {characterId ? (
+          <button
+            onClick={() => navigate(`/characters/${characterId}`)}
+            className="btn btn-secondary"
+          >
+            Back to Character
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate('/')}
+            className="btn btn-secondary"
+          >
+            Back to Home
+          </button>
+        )}
         <button
           onClick={() => navigate('/')}
           className="btn btn-primary"
@@ -162,7 +179,7 @@ const GalleryPage = () => {
       {refineModalOpen && currentImage && (
         <RefineImageModal
           image={currentImage}
-          initialPrompt={currentImage.refinedPrompt || character.prompt}
+          initialPrompt={currentImage.refinedPrompt || (character?.prompt || '')}
           onClose={() => {
             setRefineModalOpen(false);
             setCurrentImage(null);
