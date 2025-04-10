@@ -17,7 +17,7 @@ const PLACEHOLDER_IMAGES = [
 // Generate images using OpenAI API
 const generateImagesWithOpenAI = async (prompt: string, count = 1): Promise<string[]> => {
   // Access API key directly from process.env each time
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.OPEN_API_KEY;
   
   if (!apiKey) {
     console.warn('OpenAI API key not provided. Using placeholder images.');
