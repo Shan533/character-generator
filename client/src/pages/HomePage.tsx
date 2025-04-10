@@ -14,7 +14,7 @@ const HomePage = () => {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Character Image Generator</h1>
         <p className="text-lg text-gray-600">
-          Create generated character images from your descriptions
+          Create AI-generated character images from your descriptions
         </p>
       </div>
       
