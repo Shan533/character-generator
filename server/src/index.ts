@@ -49,6 +49,8 @@ app.use(cors({
     'https://shan533.github.io/character-generator',
     'https://character-generator-y9jf.onrender.com'
   ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 app.use(express.json());
