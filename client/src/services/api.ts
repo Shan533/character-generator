@@ -44,39 +44,35 @@ export const characterApi = {
   // Create a new character
   createCharacter: async (data: any) => {
     console.log('Creating character with data:', data);
-    const response = await axios.post(`${API_URL}/characters`, data, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const response = await api.post('/characters', data);
     return response.data;
   },
   
   // Get all characters
   getCharacters: async () => {
     console.log('Fetching all characters');
-    const response = await axios.get(`${API_URL}/characters`);
+    const response = await api.get('/characters');
     return response.data;
   },
   
   // Get character by ID
   getCharacterById: async (id: string) => {
     console.log('Fetching character with ID:', id);
-    const response = await axios.get(`${API_URL}/characters/${id}`);
+    const response = await api.get(`/characters/${id}`);
     return response.data;
   },
   
   // Update character
   updateCharacter: async (id: string, data: any) => {
     console.log('Updating character with ID:', id);
-    const response = await axios.put(`${API_URL}/characters/${id}`, data, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const response = await api.put(`/characters/${id}`, data);
     return response.data;
   },
   
   // Delete character
   deleteCharacter: async (id: string) => {
     console.log('Deleting character with ID:', id);
-    const response = await axios.delete(`${API_URL}/characters/${id}`);
+    const response = await api.delete(`/characters/${id}`);
     return response.data;
   }
 };
@@ -86,29 +82,25 @@ export const imageApi = {
   // Generate images for a character
   generateImages: async (characterId: string, count: number = 3) => {
     console.log('Generating images for character:', characterId);
-    const response = await axios.post(`${API_URL}/images/generate/${characterId}`, { count }, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const response = await api.post(`/images/generate/${characterId}`, { count });
     return response.data;
   },
   
   // Get images for a character
   getImagesByCharacterId: async (characterId: string) => {
-    const response = await axios.get(`${API_URL}/images/character/${characterId}`);
+    const response = await api.get(`/images/character/${characterId}`);
     return response.data;
   },
   
   // Toggle favorite status
   toggleFavorite: async (imageId: string) => {
-    const response = await axios.patch(`${API_URL}/images/${imageId}/favorite`);
+    const response = await api.patch(`/images/${imageId}/favorite`);
     return response.data;
   },
   
   // Refine image
   refineImage: async (imageId: string, refinedPrompt: string) => {
-    const response = await axios.post(`${API_URL}/images/${imageId}/refine`, { refinedPrompt }, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const response = await api.post(`/images/${imageId}/refine`, { refinedPrompt });
     return response.data;
   }
 };
