@@ -40,6 +40,7 @@ jobs:
           cd client
           npm run build
         env:
+          NODE_ENV: production
           VITE_API_URL: https://shan533.github.io/character-generator/api
       
       - name: Install server dependencies
@@ -52,6 +53,7 @@ jobs:
           cd server
           npm run build
         env:
+          NODE_ENV: production
           MONGO_URI: ${{ secrets.MONGO_URI }}
           OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
       
