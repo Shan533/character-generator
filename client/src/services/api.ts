@@ -60,6 +60,12 @@ export const characterApi = {
 
 // Image API
 export const imageApi = {
+  // Get all images
+  getAllImages: async () => {
+    const response = await api.get('/images');
+    return response.data;
+  },
+  
   // Generate images for a character
   generateImages: async (characterId: string, count: number = 3) => {
     const response = await api.post(`/images/generate/${characterId}`, { count });
