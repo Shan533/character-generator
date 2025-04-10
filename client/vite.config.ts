@@ -14,4 +14,8 @@ export default defineConfig({
     }
   },
   base: '/character-generator/',
+  define: {
+    // Make sure environment variables are properly stringified
+    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'https://character-generator-y9jf.onrender.com/api'),
+  },
 })

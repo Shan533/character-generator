@@ -8,6 +8,9 @@ const api = axios.create({
   }
 });
 
+// Log the API URL being used
+console.log('API URL:', import.meta.env.VITE_API_URL);
+
 // Add request interceptor for debugging
 api.interceptors.request.use((config) => {
   console.log('Making request to:', config.url || '');
