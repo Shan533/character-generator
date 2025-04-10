@@ -1,15 +1,18 @@
 import axios from 'axios';
 
+// Use the environment variable if available, otherwise fallback to the hardcoded Render URL
+const API_URL = import.meta.env.VITE_API_URL || 'https://character-generator-y9jf.onrender.com/api';
+
 // Create axios instance with base URL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
 // Log the API URL being used
-console.log('API URL:', import.meta.env.VITE_API_URL);
+console.log('API URL used:', API_URL);
 
 // Add request interceptor for debugging
 api.interceptors.request.use((config) => {
