@@ -18,17 +18,14 @@ const PLACEHOLDER_IMAGES = [
 const generateImagesWithOpenAI = async (prompt: string, count = 1): Promise<string[]> => {
   // Access API key directly from process.env each time
   const apiKey = process.env.OPENAI_API_KEY;
-  console.log('正在检查 OpenAI API 密钥...:', apiKey ? '密钥存在' : '密钥不存在');
   
   if (!apiKey) {
-    console.warn('OpenAI API密钥未提供。使用占位图像。');
+    console.warn('OpenAI API key not provided. Using placeholder images.');
     return PLACEHOLDER_IMAGES.slice(0, count);
   }
 
   try {
-    console.log(`正在使用DALL-E生成${count}张图像，提示: "${prompt.substring(0, 50)}..."`);
-    
-    // 初始化 OpenAI 客户端
+    // Initialize OpenAI client
     const openai = new OpenAI({
       apiKey: apiKey,
     });
@@ -45,31 +42,29 @@ const generateImagesWithOpenAI = async (prompt: string, count = 1): Promise<stri
           response_format: "url",
         });
         
-        console.log(`图像 ${i+1}/${count} 生成成功`);
         // Ensure we return a string
         const imageUrl = response.data[0].url;
         if (!imageUrl) {
-          throw new Error('没有返回图像URL');
+          throw new Error('No image URL returned');
         }
         return imageUrl;
       } catch (err: any) {
-        console.error(`生成图像 ${i+1}/${count} 时出错:`, err.message);
+        console.error(`Error generating image ${i+1}/${count}:`, err.message);
         return PLACEHOLDER_IMAGES[i % PLACEHOLDER_IMAGES.length];
       }
     });
     
     // Explicitly cast to string array
     const images = await Promise.all(imagePromises) as string[];
-    console.log(`成功获取${images.length}张图像URL`);
     return images;
   } catch (error: any) {
-    console.error('使用OpenAI生成图像时出错:', error.message);
+    console.error('Error generating images with OpenAI:', error.message);
     if (error.response) {
-      console.error('API响应状态:', error.response.status);
-      console.error('API响应数据:', error.response.data);
+      console.error('API response status:', error.response.status);
+      console.error('API response data:', error.response.data);
     }
     // Fallback to placeholder images if API call fails
-    console.warn('使用占位图像作为备选');
+    console.warn('Using placeholder images as fallback');
     return PLACEHOLDER_IMAGES.slice(0, count);
   }
 };
@@ -80,18 +75,12 @@ export const generateImages = async (req: Request, res: Response): Promise<void>
     const { characterId } = req.params;
     const { count = 1 } = req.body;
     
-    console.log(`收到为角色 ${characterId} 生成 ${count} 张图像的请求`);
-    
     // Find the character
     const character = await Character.findById(characterId);
     if (!character) {
-      console.log(`未找到ID为 ${characterId} 的角色`);
       res.status(404).json({ message: 'Character not found' });
       return;
     }
-
-    console.log(`找到角色: ${character.name}`);
-    console.log(`使用提示: "${character.prompt.substring(0, 50)}..."`);
 
     // Generate images using OpenAI
     const imageUrls = await generateImagesWithOpenAI(character.prompt, count);
@@ -109,10 +98,9 @@ export const generateImages = async (req: Request, res: Response): Promise<void>
       })
     );
     
-    console.log(`成功保存 ${savedImages.length} 张图像到数据库`);
     res.status(201).json(savedImages);
   } catch (error) {
-    console.error('生成图像时出错:', error);
+    console.error('Error generating images:', error);
     res.status(500).json({ message: 'Error generating images', error });
   }
 };
