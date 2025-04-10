@@ -177,4 +177,14 @@ export const refineImage = async (req: Request, res: Response): Promise<void> =>
   } catch (error) {
     res.status(500).json({ message: 'Error refining image', error });
   }
+};
+
+// Get all images
+export const getAllImages = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const images = await GeneratedImage.find().sort({ createdAt: -1 });
+    res.status(200).json(images);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching all images', error });
+  }
 }; 

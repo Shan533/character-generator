@@ -3,10 +3,14 @@ import {
   generateImages,
   getImagesByCharacterId,
   toggleFavorite,
-  refineImage
+  refineImage,
+  getAllImages
 } from '../controllers/image.controller';
 
 const router = express.Router();
+
+// GET all images
+router.get('/', getAllImages);
 
 // POST generate images for a character
 router.post('/generate/:characterId', generateImages);
