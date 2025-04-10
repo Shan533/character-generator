@@ -8,34 +8,61 @@ const api = axios.create({
   }
 });
 
+// Add request interceptor for debugging
+api.interceptors.request.use((config) => {
+  console.log('Making request to:', config.url || '');
+  console.log('Full URL:', (config.baseURL || '') + (config.url || ''));
+  console.log('Method:', config.method || '');
+  console.log('Headers:', config.headers);
+  return config;
+});
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  (response) => {
+    console.log('Response received:', response.status, response.statusText);
+    return response;
+  },
+  (error) => {
+    console.error('Request failed:', error.message);
+    console.error('Error details:', error.response?.data);
+    return Promise.reject(error);
+  }
+);
+
 // Character API
 export const characterApi = {
   // Create a new character
   createCharacter: async (data: any) => {
+    console.log('Creating character with data:', data);
     const response = await api.post('/characters', data);
     return response.data;
   },
   
   // Get all characters
   getCharacters: async () => {
+    console.log('Fetching all characters');
     const response = await api.get('/characters');
     return response.data;
   },
   
   // Get character by ID
   getCharacterById: async (id: string) => {
+    console.log('Fetching character with ID:', id);
     const response = await api.get(`/characters/${id}`);
     return response.data;
   },
   
   // Update character
   updateCharacter: async (id: string, data: any) => {
+    console.log('Updating character with ID:', id);
     const response = await api.put(`/characters/${id}`, data);
     return response.data;
   },
   
   // Delete character
   deleteCharacter: async (id: string) => {
+    console.log('Deleting character with ID:', id);
     const response = await api.delete(`/characters/${id}`);
     return response.data;
   }
@@ -45,6 +72,7 @@ export const characterApi = {
 export const imageApi = {
   // Generate images for a character
   generateImages: async (characterId: string, count: number = 3) => {
+    console.log('Generating images for character:', characterId);
     const response = await api.post(`/images/generate/${characterId}`, { count });
     return response.data;
   },
