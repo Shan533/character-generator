@@ -45,6 +45,7 @@ const PORT = parseInt(process.env.PORT || '8000', 10);
 app.use(cors({
   origin: [
     'http://localhost:3000',
+    'http://localhost:5173',  // Vite default dev server port
     'https://shan533.github.io',
     'https://shan533.github.io/character-generator',
     'https://character-generator-y9jf.onrender.com'
